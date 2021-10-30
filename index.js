@@ -1,22 +1,144 @@
-let gridDiv = document.getElementsByClassName("row-one")[0]
-
-for (let x = 0; x < 81; x++){
-    let inputField = document.createElement("input")
-    inputField.classList.add(`input-field`)
-    inputField.type = "number"
-    gridDiv.appendChild(inputField)
-}
-
-// let validSudokuBtn = document.getElementsByClassName("valid-sudoku-btn")[0]
+let easyDiffcultyBtn = document.getElementsByClassName("easy-diffculty-btn")[0]
+let mediumDiffcultyBtn = document.getElementsByClassName("medium-difficulty-btn")[0]
+let hardDiffcultyBtn = document.getElementsByClassName("hard-difficulty-btn")[0]
 let submitSudokuBtn = document.getElementsByClassName("submit-sudoku-btn")[0]
 let generateSolutionBtn = document.getElementsByClassName("generate-solution-btn")[0]
 let closeBtn = document.getElementsByClassName("close")[0]
 let modal = document.getElementsByClassName("modal")[0]
 let modalMessage = document.getElementsByClassName("modal-message")[0]
+let containerDiv = document.getElementsByClassName("container")[0]
+let difficultyDiv = document.getElementsByClassName("difficulty-div")[0]
+
+
+
+easyDiffcultyBtn.addEventListener("click", function(){
+    disableDifficultyButtons(true)
+    let board = generateBoard(48)
+    let gridDiv = document.getElementsByClassName("row-one")[0]
+    let row = 0
+    let column = 0
+
+    for (let x = 0; x < 81; x++){
+        if (column == 9){
+            row += 1
+            column = 0
+        }
+        let inputField = document.createElement("input")
+        inputField.classList.add(`input-field`)
+        inputField.type = "number"
+        inputField.value = board[row][column]
+        gridDiv.appendChild(inputField)
+
+        column += 1
+    }
+
+    difficultyDiv.style.display = "none"
+    containerDiv.style.display = "flex"
+    disableDifficultyButtons(false)
+    
+ });
+
+
+
+ mediumDiffcultyBtn.addEventListener("click", function(){
+    disableDifficultyButtons(true)
+    let board = generateBoard(52)
+    let gridDiv = document.getElementsByClassName("row-one")[0]
+    let row = 0
+    let column = 0
+
+    for (let x = 0; x < 81; x++){
+        if (column == 9){
+            row += 1
+            column = 0
+        }
+        let inputField = document.createElement("input")
+        inputField.classList.add(`input-field`)
+        inputField.type = "number"
+        inputField.value = board[row][column]
+        gridDiv.appendChild(inputField)
+
+        column += 1
+    }
+
+    difficultyDiv.style.display = "none"
+    containerDiv.style.display = "flex"
+    disableDifficultyButtons(false)
+    
+ });
+
+
+ hardDiffcultyBtn.addEventListener("click", function(){
+    disableDifficultyButtons(true)
+    let board = generateBoard(56)
+    let gridDiv = document.getElementsByClassName("row-one")[0]
+    let row = 0
+    let column = 0
+
+    for (let x = 0; x < 81; x++){
+        if (column == 9){
+            row += 1
+            column = 0
+        }
+        let inputField = document.createElement("input")
+        inputField.classList.add(`input-field`)
+        inputField.type = "number"
+        inputField.value = board[row][column]
+        gridDiv.appendChild(inputField)
+
+        column += 1
+    }
+
+    difficultyDiv.style.display = "none"
+    containerDiv.style.display = "flex"
+    disableDifficultyButtons(false)
+    
+ });
+
+
+
+
+
+const generateBoard = (empty_space_count) => {
+    let rand_locations = [[0,0],[1,3],[2,6],[3,7],[4,4],[5,1],[6,8],[7,5],[8,2]]
+    let board = [
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0]
+    ]
+
+    rand_locations.forEach((item) => {
+        board[item[0]][item[1]] = Math.floor(Math.random() * 9);
+    })
+    let blank_spaces = get_blank_spaces(board)
+    board = solve_board(board, blank_spaces)
+
+    let index = 0
+    let max_num = empty_space_count
+
+    while (index < max_num) {
+        let row = Math.floor(Math.random() * 9);
+        let column = Math.floor(Math.random() * 9);
+
+        if (board[row][column] != 0){
+            board[row][column] = ""
+            index += 1
+        }
+
+    }
+
+    return board
+}
 
 
 generateSolutionBtn.addEventListener("click", function(){
-    disableButtons(true)
+    disableContainerButtons(true)
     let length = document.getElementsByClassName("input-field").length
     let row_length = 0
     let board = []
@@ -56,7 +178,7 @@ generateSolutionBtn.addEventListener("click", function(){
                 index += 1
             })
         })
-        disableButtons(false)
+        disableContainerButtons(false)
     }
     else {
         modalMessage.innerHTML = "Sorry, your board is currently not valid to generate solution!"
@@ -66,50 +188,8 @@ generateSolutionBtn.addEventListener("click", function(){
  });
 
 
-// validSudokuBtn.addEventListener("click", function(){
-//     disableButtons(true)
-//     let length = document.getElementsByClassName("input-field").length
-//     let row_length = 0
-//     let board = []
-//     let row = []
-//     const valid_nums = [1,2,3,4,5,6,7,8,9]
-//     for (let x = 0; x < length; x++){
-//         number_value = document.getElementsByClassName("input-field")[x].value
-//         if (number_value === ""){
-//             number_value = 0
-//         }
-//         else if (!valid_nums.includes(parseInt(number_value))){
-//             number_value = 10
-//         }
-//         else {
-//             number_value = parseInt(number_value)
-//         }
-//         row_length += 1
-//         if (row_length === 9){
-//             row.push(number_value)
-//             board.push(row)
-//             row = []
-//             row_length = 0
-//         }
-//         else {
-//             row.push(number_value)
-//         }   
-//     }
-
-//     if (is_valid_board(board)){
-//         modalMessage.innerHTML = "Your board is currently valid! Keep up the good work!"
-//         modal.style.display = "block"
-//     }
-//     else {
-//         modalMessage.innerHTML = "Sorry, your board is currently not valid!"
-//         modal.style.display = "block"
-//     }
-    
-//  });
-
-
  submitSudokuBtn.addEventListener("click", function(){
-    disableButtons(true)
+    disableContainerButtons(true)
     let length = document.getElementsByClassName("input-field").length
     let row_length = 0
     let board = []
@@ -149,23 +229,28 @@ generateSolutionBtn.addEventListener("click", function(){
 
 
  closeBtn.addEventListener("click", function(){
-    disableButtons(false)
+    disableContainerButtons(false)
     modal.style.display = "none"
  });
 
 window.onclick = function(event){
     if (event.target == modal){
-        disableButtons(false)
+        disableContainerButtons(false)
         modal.style.display = "none"
     }
 }
 
 
 
-const disableButtons = (bool) => {
-    // validSudokuBtn.disabled = bool
+const disableContainerButtons = (bool) => {
     submitSudokuBtn.disabled = bool
     generateSolutionBtn.disabled = bool
+}
+
+const disableDifficultyButtons = (bool) => {
+    easyDiffcultyBtn.disabled = bool
+    mediumDiffcultyBtn.disabled = bool
+    hardDiffcultyBtn.disabled = bool
 }
   
 //   const clean_board = (board) => {
@@ -308,24 +393,4 @@ const disableButtons = (bool) => {
   
     return board
   }
-  
-//   const submit_board = (board) => {
-//     if (board.length != 9){
-//       return "Invalid number of rows"
-//     }
-  
-//     board.forEach((row) => {
-//       if (row.length != 9){
-//         return "Invalid number of columns in row"
-//       }
-//     });
-//     board = clean_board(board)
-//     if (!is_valid_board(board)){
-//       return "Board is not solvable"
-//     }
-//     let blank_spaces = get_blank_spaces(board)
-//     board = solve_board(board, blank_spaces)
-//     return board
-//   }
-
   

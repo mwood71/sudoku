@@ -8,12 +8,14 @@ let modal = document.getElementsByClassName("modal")[0]
 let modalMessage = document.getElementsByClassName("modal-message")[0]
 let containerDiv = document.getElementsByClassName("container")[0]
 let difficultyDiv = document.getElementsByClassName("difficulty-div")[0]
+let submissionButtons = document.getElementsByClassName("submission-buttons")[0]
+let playAgainBtn = document.getElementsByClassName("play-again-button")[0]
 
 
 
 easyDiffcultyBtn.addEventListener("click", function(){
     disableDifficultyButtons(true)
-    let board = generateBoard(48)
+    let board = generateEasyBoard()
     let gridDiv = document.getElementsByClassName("row-one")[0]
     let row = 0
     let column = 0
@@ -42,7 +44,7 @@ easyDiffcultyBtn.addEventListener("click", function(){
 
  mediumDiffcultyBtn.addEventListener("click", function(){
     disableDifficultyButtons(true)
-    let board = generateBoard(52)
+    let board = generateMediumBoard()
     let gridDiv = document.getElementsByClassName("row-one")[0]
     let row = 0
     let column = 0
@@ -70,7 +72,7 @@ easyDiffcultyBtn.addEventListener("click", function(){
 
  hardDiffcultyBtn.addEventListener("click", function(){
     disableDifficultyButtons(true)
-    let board = generateBoard(56)
+    let board = generateHardBoard()
     let gridDiv = document.getElementsByClassName("row-one")[0]
     let row = 0
     let column = 0
@@ -97,44 +99,124 @@ easyDiffcultyBtn.addEventListener("click", function(){
 
 
 
-
-
-const generateBoard = (empty_space_count) => {
-    let rand_locations = [[0,0],[1,3],[2,6],[3,7],[4,4],[5,1],[6,8],[7,5],[8,2]]
+ const generateEasyBoard = () => {
     let board = [
-        [0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0]
+        ["",6,"",3,"","",8,"",4],
+        [5,3,7,"",9,"","","",""],
+        ["",4,"","","",6,3,"",7],
+        ["",9,"","",5,1,2,3,8],
+        ["","","","","","","","",""],
+        [7,1,3,6,2,"","",4,""],
+        [3,"",6,4,"","","",1,""],
+        ["","","","",6,"",5,2,3],
+        [1,"",2,"","",9,"",8,""]
     ]
+    board = replaceNumbers(board)
+    board = switchRows(board)
+    board = rotateBoards(board)
+    return board
+ }
 
-    rand_locations.forEach((item) => {
-        board[item[0]][item[1]] = Math.floor(Math.random() * 9);
+ const generateMediumBoard = () => {
+    let board = [
+        ["","",9,7,3,"",5,2,6],
+        ["","",5,"",2,"",8,"",""],
+        [6,"",8,"","","","",4,7],
+        ["","","","","",9,"",6,2],
+        ["",4,"",6,"",3,"",8,""],
+        [8,9,"",5,"","","","",""],
+        [2,6,"","","","",1,"",8],
+        ["","",7,"",1,"",6,"",""],
+        [9,5,1,"",6,4,2,"",""]
+    ]
+    board = replaceNumbers(board)
+    board = switchRows(board)
+    board = rotateBoards(board)
+    return board
+ }
+
+
+ const generateHardBoard = () => {
+    let board = [
+        ["","","","",3,"",5,"",6],
+        ["","",5,"",2,"",8,"",""],
+        [6,"",8,"","","","","",7],
+        ["","","","","",9,"",6,2],
+        ["",4,"",6,"",3,"",8,""],
+        [8,9,"",5,"","","","",""],
+        [2,"","","","","",1,"",""],
+        ["","",7,"",1,"",6,"",""],
+        [9,5,1,"",6,4,2,"",""]
+    ]
+    board = replaceNumbers(board)
+    board = switchRows(board)
+    board = rotateBoards(board)
+    return board
+ }
+
+
+
+ const replaceNumbers = (board) => {
+    let hash = [3,5,4,6,8,7,9,2,1]
+    let random_nums = []
+
+    for (let x = 0; x < 6; x++){
+        random_nums.push(Math.floor(Math.random()*9))
+    }
+    for (let x = 0; x < random_nums.length; x+=2){
+        let temp = hash[random_nums[x]]
+        hash[random_nums[x]] = hash[random_nums[x+1]]
+        hash[random_nums[x+1]] = temp
+    }
+
+    board.forEach((row, row_index) => {
+        row.forEach((item, column_index) => {
+            if (item != ""){
+                let temp = hash[item-1]
+                board[row_index][column_index] = temp
+            }
+        })
     })
-    let blank_spaces = get_blank_spaces(board)
-    board = solve_board(board, blank_spaces)
 
-    let index = 0
-    let max_num = empty_space_count
+    return board
+ }
 
-    while (index < max_num) {
-        let row = Math.floor(Math.random() * 9);
-        let column = Math.floor(Math.random() * 9);
 
-        if (board[row][column] != 0){
-            board[row][column] = ""
-            index += 1
-        }
-
+ const switchRows = (board) => {
+    let random_rows = []
+    for (let x = 0; x < 6; x++){
+        random_rows.push(Math.floor(Math.random()*3))
+        random_rows.push(Math.floor(Math.random()*3))
+        random_rows.push(Math.floor(Math.random()*3)+3)
+        random_rows.push(Math.floor(Math.random()*3)+3)
+        random_rows.push(Math.floor(Math.random()*3)+6)
+        random_rows.push(Math.floor(Math.random()*3)+6)
+    }
+    for (let x = 0; x < random_rows.length; x+=2){
+        let temp = board[random_rows[x]]
+        board[random_rows[x]] = board[random_rows[x+1]]
+        board[random_rows[x+1]] = temp
     }
 
     return board
-}
+ }
+
+
+
+ const rotateBoards = (board) => {
+
+    let board_length = board.length
+    let new_board = [...Array(9)].map(e => Array(9));
+    for (let x = 0; x < board.length; x++){
+        for (let y = 0; y < board[x].length; y++){
+            let element = board[x][y]
+            let index = board_length - (x + 1)
+            new_board[y][index] = element
+        }
+    }
+
+    return new_board
+ }
 
 
 generateSolutionBtn.addEventListener("click", function(){
@@ -178,6 +260,8 @@ generateSolutionBtn.addEventListener("click", function(){
                 index += 1
             })
         })
+        submissionButtons.style.display = "none"
+        playAgainBtn.style.display = "block"
         disableContainerButtons(false)
     }
     else {
@@ -216,6 +300,8 @@ generateSolutionBtn.addEventListener("click", function(){
     }
 
     if (is_valid_board(board)){
+        submissionButtons.style.display = "none"
+        playAgainBtn.style.display = "block"
         modalMessage.innerHTML = "Your board you submitted is valid! Great job!"
         modal.style.display = "block"
     }
@@ -239,6 +325,10 @@ window.onclick = function(event){
         modal.style.display = "none"
     }
 }
+
+playAgainBtn.addEventListener("click", function(){
+    location.reload();
+})
 
 
 

@@ -47,6 +47,10 @@
     display: flex;
     justify-content: space-between;
 }
+
+.play-again-button {
+    display: none;
+}
 .close {
     color: #aaaaaa;
     float: right;

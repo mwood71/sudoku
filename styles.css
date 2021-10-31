@@ -1,9 +1,34 @@
+body {
+    color: #EEFBFB;
+    background: #12232E;
+}
+
+.btn {
+    background: #007CC7;
+    padding:1.2em 2.4em;
+    outline: none;
+    border: none;
+    border-radius:5px;
+    color: #EEFBFB;
+    font-size: 1.2em;
+}
+.btn:hover {
+    background: #4DA8DA;
+    cursor: pointer;
+}
+
+.difficulty-buttons, .submission-buttons {
+    display: flex;
+    column-gap: 0.5em;
+}
+
 .container {
     display: none;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     row-gap: 2em;
+    padding-top: 5em;
 }
 
 .difficulty-div {
@@ -13,6 +38,16 @@
     flex-direction: column;
     row-gap: 2em;
     padding-top: 10em;
+}
+
+.difficulty-div h3 {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.modal-message {
+    text-align: center;
+    font-size: 1.3em;
 }
 
 .row-one {
@@ -39,7 +74,7 @@
     padding-top: 10em;
 }
 .modal-content {
-    background: white;
+    background: #007CC7;
     width: 65%;
     margin: auto;
     padding: 1em;
@@ -73,10 +108,13 @@
 
 @media only screen and (max-width: 650px) {
     .row-one input[type="number"] {
-        width:2.5em;
-        height: 2em;
+        width:1.7em;
+        height: 1.7em;
     }
     .modal-content {
         width: 80%;
+    }
+    .btn {
+        padding:0.5em 0.8em;
     }
 }
